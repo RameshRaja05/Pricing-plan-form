@@ -1,8 +1,0 @@
-POST "https://forms.maakeetoo.com/formapi/789"
-Content-Type: application/json
-
-{
-    firstname:"Ramesh",
-    email:"tebsvs@gmail.com",
-    message:"Hello theree"
-}

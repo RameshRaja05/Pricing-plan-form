@@ -1,11 +1,10 @@
 const form=document.querySelector(".modal-body form");
 const modalCloseButton=document.querySelector(".modal-footer button");
 const formInfo={
-    "name":document.querySelector("input[name=firstname]"),
-    "email":document.querySelector("input[name=email]"),
-    "orderInfo":document.querySelector("textarea[name=message]")
+    "name":document.querySelector("form input[name=firstname]"),
+    "email":document.querySelector("form input[name=email]"),
+    "orderInfo":document.querySelector("form textarea[name=message]")
 }
-
 const resetValues=()=>{
     for(let key in formInfo){
        const info=formInfo[key];
@@ -16,28 +15,26 @@ const resetValues=()=>{
 
 form.addEventListener("submit",async(e)=>{
     e.preventDefault();
+    const headers=new Headers();
+    headers.append('Content-Type', 'application/json');
     const data={
-        name:formInfo.name.value,
+        firstname:formInfo.name.value,
         email:formInfo.email.value,
         message:formInfo.orderInfo.value
     };
     modalCloseButton.click()
-    const res=await fetch("https://forms.maakeetoo.com/formapi/789",{
+    //the forms hasn't fully configured for accepting client request that's why we use proxy server to send a data to api
+    const res=await fetch("https://cors-anywhere.herokuapp.com/https://forms.maakeetoo.com/formapi/788",{
+        mode:"cors",
         method:"POST",
-        headers:{
-            "Content-Type": "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods" : "POST,OPTIONS,GET",
-            "Access-Control-Allow-Headers" : "Origin, Content-Type, Accept",
-            "AccessCode":"9RTQEHBN7P7Y3Z5SOIOU5QUVD",
-            'Accept': 'application/json',
-        },
+        headers,
         body:JSON.stringify(data)
-    })
-    console.log(res);
-    resetValues()
+    });
+    if(res.status===201){
+        alert("We got your response");
+    }
+    modalCloseButton.click()
 })
-
 
 
 
